@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +38,20 @@ public class ProductoController {
 
 		if (productoData.isPresent()) {
 			return new ResponseEntity<>(productoData.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@PutMapping("/productos/{id}")
+	public ResponseEntity<Producto> update(@PathVariable("id") int id, 
+			@RequestBody Producto producto) {
+		Optional<Producto> productoData = service.findById(id);
+		
+		if (productoData.isPresent()) {
+			Producto _producto = productoData.get();
+			_producto.setPrecio(producto.getPrecio());
+			return new ResponseEntity<>(service.save(_producto), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

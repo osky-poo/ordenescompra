@@ -3,6 +3,10 @@ package com.example.crud.model;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,10 +24,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({ "idProducto", "idSucursal", "idOrden" })
 public class Orden {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonIgnore
 	private int idOrden;
 	
 	private int idSucursal;
@@ -32,10 +38,10 @@ public class Orden {
 	
 	private double total;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable ( name = "orden_producto" , 
 		joinColumns = { @JoinColumn ( name = " orden_id" )}, 
 		inverseJoinColumns = { @JoinColumn ( name = " producto_id" )} )
-	List<Producto> productos;
+	private List<Producto> productos;
 
 }

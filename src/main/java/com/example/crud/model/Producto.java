@@ -1,5 +1,8 @@
 package com.example.crud.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,18 +13,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "ordenes")
+@Table(name = "productos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({ "idProducto", "idSucursal", "idOrden" })
 public class Producto {
-	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int idOrden;
-	
+	@JsonIgnore
 	private int idProducto;
+	
+	//private int idOrden;
 	
 	private String codigo;
 	
